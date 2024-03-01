@@ -42,6 +42,7 @@ my %OPTIONS_DEFAULT = (
 	'verbose' => ['1', 'Verbosity level (0 = silently ignore any errors, 1 = display brief error, 2 = display full server response)'],
 	'rate_limit' => ['0', 'Rate limit in seconds (0 = unlimited), will send a maximum of 1 notification per time limit'],
 	'short_name' => ['off', 'Use short buffer name in notification'],
+	'redact_all' => ['off', 'When receiving notifications, redact all the messages'],
 );
 my %OPTIONS = ();
 my $TIMEOUT = 30 * 1000;
@@ -183,7 +184,7 @@ sub print_cb
 
 	my $msg = "[$buffer_full_name] <$prefix> ";
 
-	if ($buffer_type eq "private" && $OPTIONS{redact_priv_msg} eq "on") {
+	if (($buffer_type eq "private" && $OPTIONS{redact_priv_msg} eq "on") || $OPTIONS{redact_all} eq "on") {
 		$msg .= "...";
 	} else {
 		$msg .= "$message";
